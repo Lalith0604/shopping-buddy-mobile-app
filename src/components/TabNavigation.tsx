@@ -1,6 +1,7 @@
-
 import React, { useState } from 'react';
 import { Home, ShoppingCart, Scan, Tag, User } from 'lucide-react';
+import { navigation } from '../theme/styles';
+import { cn } from '../lib/utils';
 import HomeScreen from '../screens/HomeScreen';
 import CartScreen from '../screens/CartScreen';
 import ScanScreen from '../screens/ScanScreen';
@@ -28,8 +29,8 @@ const TabNavigation: React.FC = () => {
       </div>
 
       {/* Bottom Tab Bar */}
-      <div className="bg-white border-t border-gray-200 px-4 py-2 safe-area-bottom">
-        <div className="flex justify-around items-center max-w-md mx-auto">
+      <div className={navigation.tabBar}>
+        <div className={navigation.tabContainer}>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -38,14 +39,15 @@ const TabNavigation: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex flex-col items-center space-y-1 py-2 px-3 rounded-lg transition-colors ${
+                className={cn(
+                  navigation.tabButton,
                   isActive 
-                    ? 'text-indigo-600 bg-indigo-50' 
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
+                    ? navigation.tabButtonActive
+                    : navigation.tabButtonInactive
+                )}
               >
-                <Icon size={24} />
-                <span className="text-xs font-medium">{tab.label}</span>
+                <Icon className={navigation.tabIcon} />
+                <span className={navigation.tabLabel}>{tab.label}</span>
               </button>
             );
           })}

@@ -1,24 +1,46 @@
 
 import React from 'react';
+import { layouts, typography } from '../theme/styles';
+import { cn } from '../lib/utils';
 
 interface ScreenPlaceholderProps {
   title: string;
   subtitle?: string;
+  icon?: string;
+  className?: string;
 }
 
-const ScreenPlaceholder: React.FC<ScreenPlaceholderProps> = ({ title, subtitle }) => {
+const ScreenPlaceholder: React.FC<ScreenPlaceholderProps> = ({ 
+  title, 
+  subtitle, 
+  icon = '📱',
+  className 
+}) => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
-      <div className="text-center space-y-4">
-        <div className="w-16 h-16 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6">
-          <span className="text-white text-2xl font-bold">📱</span>
+    <div className={cn(layouts.screenContainer, layouts.centeredColumn, 'px-4', className)}>
+      <div className="text-center space-y-4 max-w-md mx-auto">
+        {/* Icon */}
+        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+          <span className="text-white text-2xl font-bold">{icon}</span>
         </div>
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">{title}</h1>
+        
+        {/* Title */}
+        <h1 className={cn(typography.h2, 'text-foreground mb-2')}>
+          {title}
+        </h1>
+        
+        {/* Subtitle */}
         {subtitle && (
-          <p className="text-lg text-gray-600 max-w-md mx-auto">{subtitle}</p>
+          <p className={cn(typography.lead, 'max-w-md mx-auto')}>
+            {subtitle}
+          </p>
         )}
-        <div className="mt-8 text-sm text-gray-500">
-          Smart Shopping Cart System
+        
+        {/* App branding */}
+        <div className="mt-8">
+          <p className={cn(typography.muted)}>
+            Smart Shopping Cart System
+          </p>
         </div>
       </div>
     </div>
