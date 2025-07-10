@@ -1,13 +1,17 @@
 
 import React from 'react';
 import ScreenPlaceholder from '../components/ScreenPlaceholder';
+import AppLayout from '../components/AppLayout';
 
 const HomeScreen: React.FC = () => {
   return (
-    <ScreenPlaceholder 
-      title="Home Screen" 
-      subtitle="Browse products and manage your smart shopping experience"
-    />
+    <AppLayout>
+      <ScreenPlaceholder 
+        title="Home Screen" 
+        subtitle="Browse products and manage your smart shopping experience"
+        icon="🏠"
+      />
+    </AppLayout>
   );
 };
 

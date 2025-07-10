@@ -1,13 +1,17 @@
 
 import React from 'react';
 import ScreenPlaceholder from '../components/ScreenPlaceholder';
+import AppLayout from '../components/AppLayout';
 
 const OffersScreen: React.FC = () => {
   return (
-    <ScreenPlaceholder 
-      title="Offers / Deals" 
-      subtitle="Discover amazing deals and special offers"
-    />
+    <AppLayout>
+      <ScreenPlaceholder 
+        title="Offers / Deals" 
+        subtitle="Discover amazing deals and special offers"
+        icon="🏷️"
+      />
+    </AppLayout>
   );
 };
 

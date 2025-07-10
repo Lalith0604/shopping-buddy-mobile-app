@@ -1,13 +1,17 @@
 
 import React from 'react';
 import ScreenPlaceholder from '../components/ScreenPlaceholder';
+import AppLayout from '../components/AppLayout';
 
 const CartScreen: React.FC = () => {
   return (
-    <ScreenPlaceholder 
-      title="Cart View" 
-      subtitle="View and manage items in your shopping cart"
-    />
+    <AppLayout>
+      <ScreenPlaceholder 
+        title="Cart View" 
+        subtitle="View and manage items in your shopping cart"
+        icon="🛒"
+      />
+    </AppLayout>
   );
 };
 

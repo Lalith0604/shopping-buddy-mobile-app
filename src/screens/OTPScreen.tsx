@@ -1,13 +1,17 @@
 
 import React from 'react';
 import ScreenPlaceholder from '../components/ScreenPlaceholder';
+import AppLayout from '../components/AppLayout';
 
 const OTPScreen: React.FC = () => {
   return (
-    <ScreenPlaceholder 
-      title="OTP Verification" 
-      subtitle="Enter the verification code sent to your mobile number"
-    />
+    <AppLayout showCart={false}>
+      <ScreenPlaceholder 
+        title="OTP Verification" 
+        subtitle="Enter the verification code sent to your mobile number"
+        icon="🔐"
+      />
+    </AppLayout>
   );
 };
 
