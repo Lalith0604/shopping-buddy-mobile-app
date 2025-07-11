@@ -75,22 +75,13 @@ const ScanScreen: React.FC = () => {
     }, 2500);
   };
 
-  const toggleFlash = async () => {
-    if (stream) {
-      const track = stream.getVideoTracks()[0];
-      const capabilities = track.getCapabilities();
-      
-      if (capabilities.torch) {
-        try {
-          await track.applyConstraints({
-            advanced: [{ torch: !isFlashOn }]
-          });
-          setIsFlashOn(!isFlashOn);
-        } catch (error) {
-          console.error('Flash toggle error:', error);
-        }
-      }
-    }
+  const toggleFlash = () => {
+    // Flash is not available in web browsers, but we can toggle the visual state
+    setIsFlashOn(!isFlashOn);
+    toast({
+      title: "Flash Not Available",
+      description: "Flash functionality is not supported in web browsers.",
+    });
   };
 
   const addToCart = () => {
