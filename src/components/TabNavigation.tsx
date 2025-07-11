@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Home, ShoppingCart, Scan, Tag, User } from 'lucide-react';
 import { navigation } from '../theme/styles';
@@ -8,6 +7,7 @@ import CartScreen from '../screens/CartScreen';
 import ScanScreen from '../screens/ScanScreen';
 import OffersScreen from '../screens/OffersScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import FooterBar from './FooterBar';
 
 const TabNavigation: React.FC = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -28,6 +28,9 @@ const TabNavigation: React.FC = () => {
       <div className="flex-1">
         <ActiveComponent />
       </div>
+
+      {/* Persistent Footer Bar */}
+      <FooterBar />
 
       {/* Bottom Tab Bar */}
       <div className={navigation.tabBar}>

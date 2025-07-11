@@ -1,4 +1,3 @@
-
 import React from 'react';
 import AppLayout from '../components/AppLayout';
 import HomeHeader from '../components/HomeHeader';
@@ -9,7 +8,6 @@ import TopOffers from '../components/TopOffers';
 import SmartMartHighlights from '../components/SmartMartHighlights';
 import SmartSuggestions from '../components/SmartSuggestions';
 import QuickAccessButtons from '../components/QuickAccessButtons';
-import FooterStrip from '../components/FooterStrip';
 
 const HomeScreen: React.FC = () => {
   return (
@@ -35,7 +33,6 @@ const HomeScreen: React.FC = () => {
           
           <SmartSuggestions />
           <QuickAccessButtons />
-          <FooterStrip />
         </div>
       </div>
     </AppLayout>
