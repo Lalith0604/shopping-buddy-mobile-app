@@ -21,7 +21,7 @@ const CartPanel: React.FC = () => {
       <div className="p-4 border-b border-border">
         <div className="flex items-center space-x-2">
           <ShoppingCart className="w-6 h-6 text-primary" />
-          <h2 className={cn(typography.h4, 'text-foreground')}>Cart</h2>
+          <h2 className={cn(typography.h4, 'text-foreground')}>Your Cart</h2>
         </div>
       </div>
 
