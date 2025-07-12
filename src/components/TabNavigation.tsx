@@ -8,7 +8,6 @@ import CartScreen from '../screens/CartScreen';
 import ScanScreen from '../screens/ScanScreen';
 import OffersScreen from '../screens/OffersScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import FooterBar from './FooterBar';
 import TopHeaderBar from './TopHeaderBar';
 
 const TabNavigation: React.FC = () => {
@@ -29,13 +28,10 @@ const TabNavigation: React.FC = () => {
       {/* Fixed Top Header Bar */}
       <TopHeaderBar />
 
-      {/* Main Content */}
-      <div className="flex-1">
+      {/* Main Content with AppLayout (includes footer) */}
+      <div className="flex-1 flex flex-col">
         <ActiveComponent />
       </div>
-
-      {/* Persistent Footer Bar */}
-      <FooterBar />
 
       {/* Bottom Tab Bar */}
       <div className={navigation.tabBar}>
