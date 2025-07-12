@@ -1,11 +1,13 @@
-
 import React from 'react';
 import { layouts, typography } from '../theme/styles';
 import { cn } from '../lib/utils';
 import { ShoppingCart, Package, Plus, Minus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './base/Card';
+import { useNavigate } from 'react-router-dom';
 
 const CartPanel: React.FC = () => {
+  const navigate = useNavigate();
+
   // Placeholder cart items
   const cartItems = [
     { id: 1, name: 'Organic Apples', price: 3.99, quantity: 2 },
@@ -14,6 +16,10 @@ const CartPanel: React.FC = () => {
   ];
 
   const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+  const handleCheckout = () => {
+    navigate('/checkout');
+  };
 
   return (
     <div className="h-full bg-background border-l border-border flex flex-col">
@@ -70,7 +76,10 @@ const CartPanel: React.FC = () => {
               ${total.toFixed(2)}
             </span>
           </div>
-          <button className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+          <button 
+            onClick={handleCheckout}
+            className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
+          >
             Checkout
           </button>
         </div>
