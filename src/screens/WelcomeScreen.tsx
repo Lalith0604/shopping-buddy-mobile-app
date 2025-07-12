@@ -35,10 +35,7 @@ const WelcomeScreen: React.FC = () => {
   const handleContinue = () => {
     if (isValid) {
       console.log('Proceed to OTP for mobile:', mobileNumber);
-      toast({
-        title: "OTP Sent",
-        description: `Verification code sent to +91 ${mobileNumber}`,
-      });
+      toast(`Verification code sent to +91 ${mobileNumber}`);
       navigate('/otp');
     }
   };
