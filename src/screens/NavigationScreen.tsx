@@ -5,6 +5,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useToast } from '../hooks/use-toast';
 import { Search, X } from 'lucide-react';
+import Svg, { Path, Defs, Marker, Polygon } from 'react-native-svg';
 
 // Dummy item database with store locations
 const STORE_ITEMS = {
@@ -21,6 +22,10 @@ const NavigationScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [destinationPosition, setDestinationPosition] = useState<{ x: number, y: number } | null>(null);
+
+  // Blueprint container dimensions (in pixels)
+  const containerWidth = 100; // This will be converted to percentage
+  const containerHeight = 100; // This will be converted to percentage
 
   const handleRecenter = () => {
     setLocationPosition({ x: 50, y: 30 });
@@ -96,40 +101,65 @@ const NavigationScreen: React.FC = () => {
     const endX = destinationPosition.x;
     const endY = destinationPosition.y;
 
-    // Create a curved path using SVG
+    // Create a curved path using SVG with better visibility
     const midX = (startX + endX) / 2;
-    const midY = Math.min(startY, endY) - 5; // Curve upward
+    const midY = Math.min(startY, endY) - 8; // More pronounced curve
 
     return (
-      <svg 
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{ zIndex: 5 }}
+      <Svg 
+        className="absolute inset-0 w-full h-full"
+        style={{ 
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 5,
+          pointerEvents: 'none'
+        }}
+        width="100%"
+        height="100%"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
       >
-        <defs>
-          <marker
+        <Defs>
+          <Marker
             id="arrowhead"
-            markerWidth="10"
-            markerHeight="7"
-            refX="9"
-            refY="3.5"
+            markerWidth="8"
+            markerHeight="6"
+            refX="7"
+            refY="3"
             orient="auto"
+            markerUnits="strokeWidth"
           >
-            <polygon
-              points="0 0, 10 3.5, 0 7"
+            <Polygon
+              points="0,0 0,6 8,3"
               fill="#007BFF"
+              stroke="#007BFF"
+              strokeWidth="1"
             />
-          </marker>
-        </defs>
-        <path
-          d={`M ${startX}% ${startY}% Q ${midX}% ${midY}% ${endX}% ${endY}%`}
+          </Marker>
+        </Defs>
+        <Path
+          d={`M ${startX} ${startY} Q ${midX} ${midY} ${endX} ${endY}`}
           stroke="#007BFF"
-          strokeWidth="3"
+          strokeWidth="0.8"
           fill="none"
-          strokeDasharray="8,4"
+          strokeDasharray="2,1"
           markerEnd="url(#arrowhead)"
-          className="animate-pulse"
+          strokeLinecap="round"
+          opacity="0.9"
         />
-      </svg>
+        {/* Add a wider background stroke for better visibility */}
+        <Path
+          d={`M ${startX} ${startY} Q ${midX} ${midY} ${endX} ${endY}`}
+          stroke="rgba(255,255,255,0.8)"
+          strokeWidth="1.2"
+          fill="none"
+          strokeLinecap="round"
+          opacity="0.6"
+        />
+      </Svg>
     );
   };
 
@@ -229,7 +259,7 @@ const NavigationScreen: React.FC = () => {
               </div>
             </div>
 
-            {/* Path Rendering */}
+            {/* Path Rendering - Enhanced */}
             {renderPath()}
 
             {/* Destination Marker */}
