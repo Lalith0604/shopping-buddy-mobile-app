@@ -1,13 +1,26 @@
-
 import React, { useState } from 'react';
 import { layouts, typography } from '../theme/styles';
 import { cn } from '../lib/utils';
 import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
 import { useToast } from '../hooks/use-toast';
+import { Search, X } from 'lucide-react';
+
+// Dummy item database with store locations
+const STORE_ITEMS = {
+  'tata salt': { section: 'Groceries', position: { x: 25, y: 45 }, zone: 'Household Items' },
+  'lays chips': { section: 'Snacks', position: { x: 75, y: 35 }, zone: 'Snacks & Beverages' },
+  'milk': { section: 'Dairy', position: { x: 25, y: 32 }, zone: 'Dairy & Frozen' },
+  'tv': { section: 'Electronics', position: { x: 75, y: 20 }, zone: 'Electronics' },
+  'apple': { section: 'Fruits', position: { x: 25, y: 20 }, zone: 'Fruits & Vegetables' }
+};
 
 const NavigationScreen: React.FC = () => {
   const { toast } = useToast();
   const [locationPosition, setLocationPosition] = useState({ x: 50, y: 30 });
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [destinationPosition, setDestinationPosition] = useState<{ x: number, y: number } | null>(null);
 
   const handleRecenter = () => {
     setLocationPosition({ x: 50, y: 30 });
@@ -18,7 +31,6 @@ const NavigationScreen: React.FC = () => {
   };
 
   const handleSimulateMove = () => {
-    // Simulate moving to different sections of the store
     const positions = [
       { x: 25, y: 20, section: "Fruits & Vegetables" },
       { x: 75, y: 35, section: "Electronics" },
@@ -36,6 +48,91 @@ const NavigationScreen: React.FC = () => {
     });
   };
 
+  const handleSearch = () => {
+    const query = searchQuery.toLowerCase().trim();
+    
+    if (!query) {
+      toast({
+        title: "Enter an item name",
+        description: "Please type an item to search for",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const item = STORE_ITEMS[query as keyof typeof STORE_ITEMS];
+    
+    if (item) {
+      setSelectedItem(query);
+      setDestinationPosition(item.position);
+      toast({
+        title: "Item Found!",
+        description: `${query} is located in ${item.zone}`,
+      });
+    } else {
+      toast({
+        title: "Item Not Found",
+        description: "Try searching for: Tata Salt, Lays Chips, Milk, TV, or Apple",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setSelectedItem(null);
+    setDestinationPosition(null);
+    toast({
+      title: "Search Cleared",
+      description: "Path and destination removed",
+    });
+  };
+
+  const renderPath = () => {
+    if (!destinationPosition) return null;
+
+    const startX = locationPosition.x;
+    const startY = locationPosition.y;
+    const endX = destinationPosition.x;
+    const endY = destinationPosition.y;
+
+    // Create a curved path using SVG
+    const midX = (startX + endX) / 2;
+    const midY = Math.min(startY, endY) - 5; // Curve upward
+
+    return (
+      <svg 
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{ zIndex: 5 }}
+      >
+        <defs>
+          <marker
+            id="arrowhead"
+            markerWidth="10"
+            markerHeight="7"
+            refX="9"
+            refY="3.5"
+            orient="auto"
+          >
+            <polygon
+              points="0 0, 10 3.5, 0 7"
+              fill="#007BFF"
+            />
+          </marker>
+        </defs>
+        <path
+          d={`M ${startX}% ${startY}% Q ${midX}% ${midY}% ${endX}% ${endY}%`}
+          stroke="#007BFF"
+          strokeWidth="3"
+          fill="none"
+          strokeDasharray="8,4"
+          markerEnd="url(#arrowhead)"
+          className="animate-pulse"
+        />
+      </svg>
+    );
+  };
+
   return (
     <div className={cn(layouts.screenContainer)}>
       {/* Header */}
@@ -44,6 +141,36 @@ const NavigationScreen: React.FC = () => {
         <p className={cn(typography.muted, "text-center mt-1")}>
           Find your way around SmartMart
         </p>
+      </div>
+
+      {/* Search Bar */}
+      <div className="p-4 bg-muted/30 border-b border-border">
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Search for an item… (e.g., Tata Salt)"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              className="pl-10"
+            />
+          </div>
+          <Button onClick={handleSearch} size="sm">
+            Search
+          </Button>
+          {selectedItem && (
+            <Button onClick={handleClearSearch} variant="outline" size="sm">
+              <X className="w-4 h-4" />
+            </Button>
+          )}
+        </div>
+        
+        {selectedItem && (
+          <div className="mt-2 p-2 bg-primary/10 rounded text-sm">
+            <span className="font-medium">Route to:</span> {selectedItem} → {STORE_ITEMS[selectedItem as keyof typeof STORE_ITEMS]?.zone}
+          </div>
+        )}
       </div>
 
       {/* Store Map Container */}
@@ -102,6 +229,26 @@ const NavigationScreen: React.FC = () => {
               </div>
             </div>
 
+            {/* Path Rendering */}
+            {renderPath()}
+
+            {/* Destination Marker */}
+            {destinationPosition && (
+              <div 
+                className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10"
+                style={{ 
+                  left: `${destinationPosition.x}%`, 
+                  top: `${destinationPosition.y}%` 
+                }}
+              >
+                <div className="absolute inset-0 w-6 h-6 bg-yellow-400/50 rounded-full animate-ping"></div>
+                <div className="relative w-3 h-3 bg-yellow-400 rounded-full border-2 border-white shadow-lg"></div>
+                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-black px-2 py-1 rounded text-xs font-medium whitespace-nowrap">
+                  {selectedItem}
+                </div>
+              </div>
+            )}
+
             {/* Current Location Marker */}
             <div 
               className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10"
@@ -146,6 +293,12 @@ const NavigationScreen: React.FC = () => {
                 <div className="w-3 h-3 bg-primary rounded-full"></div>
                 <span>Your Location</span>
               </div>
+              {destinationPosition && (
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                  <span>Destination</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -170,7 +323,7 @@ const NavigationScreen: React.FC = () => {
         {/* Info Section */}
         <div className="mt-6 p-4 bg-muted/50 rounded-lg text-center">
           <p className={cn(typography.bodySmall, "text-muted-foreground")}>
-            This is a simulated store map. Your actual location will be determined using in-store positioning technology.
+            Search for items like "Tata Salt", "Lays Chips", "Milk", "TV", or "Apple" to see pathfinding in action.
           </p>
         </div>
       </div>
