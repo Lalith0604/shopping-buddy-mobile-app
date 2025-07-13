@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Home, ShoppingCart, Scan, Tag, User } from 'lucide-react';
+import { Home, ShoppingCart, Scan, Tag, User, MapPin } from 'lucide-react';
 import { navigation } from '../theme/styles';
 import { cn } from '../lib/utils';
 import HomeScreen from '../screens/HomeScreen';
@@ -8,6 +8,7 @@ import CartScreen from '../screens/CartScreen';
 import ScanScreen from '../screens/ScanScreen';
 import OffersScreen from '../screens/OffersScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import NavigationScreen from '../screens/NavigationScreen';
 import TopHeaderBar from './TopHeaderBar';
 
 const TabNavigation: React.FC = () => {
@@ -17,6 +18,7 @@ const TabNavigation: React.FC = () => {
     { id: 'home', label: 'Home', icon: Home, component: HomeScreen },
     { id: 'cart', label: 'Cart', icon: ShoppingCart, component: CartScreen },
     { id: 'scan', label: 'Add Item', icon: Scan, component: ScanScreen },
+    { id: 'navigation', label: 'Navigation', icon: MapPin, component: NavigationScreen },
     { id: 'offers', label: 'Offers', icon: Tag, component: OffersScreen },
     { id: 'profile', label: 'Profile', icon: User, component: ProfileScreen },
   ];
