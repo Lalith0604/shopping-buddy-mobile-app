@@ -5,7 +5,6 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useToast } from '../hooks/use-toast';
 import { Search, X } from 'lucide-react';
-import Svg, { Path, Defs, Marker, Polygon } from 'react-native-svg';
 
 // Dummy item database with store locations
 const STORE_ITEMS = {
@@ -106,24 +105,14 @@ const NavigationScreen: React.FC = () => {
     const midY = Math.min(startY, endY) - 8; // More pronounced curve
 
     return (
-      <Svg 
-        className="absolute inset-0 w-full h-full"
-        style={{ 
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 5,
-          pointerEvents: 'none'
-        }}
-        width="100%"
-        height="100%"
+      <svg 
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{ zIndex: 5 }}
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
       >
-        <Defs>
-          <Marker
+        <defs>
+          <marker
             id="arrowhead"
             markerWidth="8"
             markerHeight="6"
@@ -132,15 +121,15 @@ const NavigationScreen: React.FC = () => {
             orient="auto"
             markerUnits="strokeWidth"
           >
-            <Polygon
+            <polygon
               points="0,0 0,6 8,3"
               fill="#007BFF"
               stroke="#007BFF"
               strokeWidth="1"
             />
-          </Marker>
-        </Defs>
-        <Path
+          </marker>
+        </defs>
+        <path
           d={`M ${startX} ${startY} Q ${midX} ${midY} ${endX} ${endY}`}
           stroke="#007BFF"
           strokeWidth="0.8"
@@ -151,7 +140,7 @@ const NavigationScreen: React.FC = () => {
           opacity="0.9"
         />
         {/* Add a wider background stroke for better visibility */}
-        <Path
+        <path
           d={`M ${startX} ${startY} Q ${midX} ${midY} ${endX} ${endY}`}
           stroke="rgba(255,255,255,0.8)"
           strokeWidth="1.2"
@@ -159,7 +148,7 @@ const NavigationScreen: React.FC = () => {
           strokeLinecap="round"
           opacity="0.6"
         />
-      </Svg>
+      </svg>
     );
   };
 
